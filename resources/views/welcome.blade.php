@@ -55,7 +55,7 @@
 						<!-- Motivo de la cita -->
 						<div class="form-group">
 							<label for="title">Motivo</label>
-							<input type="text" name="title" id="aptTitle" class="form-control" placeholder="Motivo de la consulta">
+							<input type="text" name="title" id="aptTitle" autofocus class="form-control" placeholder="Motivo de la consulta">
 							<h5 class="input_error_active" id="errorTitle" style="color: red"></h5>
 
 						</div>
@@ -105,14 +105,14 @@
 		const token = document.getElementsByName('_token')
 
 		// inputs  modal
-		let motivoAppt = document.querySelector('#aptTitle')
-		let dateAppt = document.querySelector('#aptDate')
-		let hourAppt = document.querySelector('#aptHour')
-		let idAppt = document.querySelector('#idEvent')
+		const motivoAppt = document.querySelector('#aptTitle')
+		const dateAppt = document.querySelector('#aptDate')
+		const hourAppt = document.querySelector('#aptHour')
+		const idAppt = document.querySelector('#idEvent')
 
 		// borrar datos si se hace click en el boton cancelar
 		btnCancel.addEventListener('click', () => {
-			//	limpiarFormulario()
+			limpiarFormulario()
 		})
 		// elemento Calendario
 		let calendarEl = document.querySelector('#calendar')
@@ -149,8 +149,11 @@
 
 					dateAppt.value = fechaHora[0]
 					hourAppt.value = fechaHora[1].substr(0, 5)
+					
+					document.querySelector('#aptTitle').focus()
 
 					$('#nuevaCita').modal('toggle')
+					//motivoAppt.focus()
 				}
 			})
 			calendar.setOption('locale', 'Es')
@@ -202,9 +205,8 @@
 			return false;
 		})
 
-		btnModificar.addEventListener('click', async (e) => {
-			guardarDatos(inf)
-			console.info(e)
+		btnModificar.addEventListener('click', function(){
+			guardarDatos(`/${idAppt.value}`,'PATCH')
 		})
 
 		btnEliminar.addEventListener('click', async () => {
